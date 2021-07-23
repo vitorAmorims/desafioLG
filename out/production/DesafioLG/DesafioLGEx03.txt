@@ -1,0 +1,47 @@
+Desafio LG parte 3
+
+A) Faça uma consulta SQL que retorne a soma dos salários dos funcionários agrupados por empresa.
+Resposta:
+SELECT CodigoEmpresa, SUM(Salario) AS SOMA
+FROM Funcionario
+GROUP BY(CodigoEmpresa);
+
+B) Faça uma consulta SQL que retorne o nome das empresas que possuem mais de 30 funcionários.
+
+/*
+NOTA: A tabela Empresa, não possui campo "atributo" nome, por este motivo, estarei realizando duas querys para a pergunta B.
+*/
+
+RepostaB1:
+A primeira query retorna a descrição das empresas, considerando a mesma condição da pergunta B.
+
+SELECT E.Descricao
+FROM Empresa as E
+JOIN Funcionário as F
+ON F.CodigoEmpresa = E.CodigoEmpresa
+GROUP BY(E.CodigoEmpresa)
+HAVING count(*) > 30;
+
+RepostaB2:
+A seguinda consulta, retorna o id das das empresas, considerando a mesma condição da pergunta B.
+
+SELECT CodigoEmpresa FROM Funcionario
+GROUP BY (CodigoEmpresa)
+HAVING count(*) > 30;
+
+
+C) Faça uma consulta SQL que retorne o nome do funcionário, o código e a descrição do centro de custos
+e o código e a descrição do seu cargo.
+
+SELECT f.Nome as Nome_Funcionario, cDc.Codigo as Codigo_CC, cDc.Descricao as CC_descricao, cG.Codigo as Codigo_Cargo, cG.Descricao as Descricao_cargo
+FROM Funcionario as f
+JOIN CentroDeCustos as cDc
+ON cDc.Codigo = f.CodigoCentroDeCustos
+JOIN Cargo as cG
+ON cG.Codigo = f.CodigoCargo;
+
+D) Faça uma consulta SQL que retorne todos os funcionários que não possuem dependentes.
+SELECT f.Nome as Funcionario, d.Nome as Nome_Dependente
+FROM Funcionario as f
+RIGHT OUTER JOIN Dependente as d
+ON (f.Codigo = d.CodigoFuncionario)
